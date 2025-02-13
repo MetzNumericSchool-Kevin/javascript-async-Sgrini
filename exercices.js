@@ -68,12 +68,38 @@ creerLesChoixEpoque(epoques);
 
 // Fonction appelée plus haut quand le formulaire de voyage temporel est soumis
 // et qu'une époque de destination du voyage temporel a été choisi
+const hideTime = document.querySelector(".localisation_epoque");
+const loader = document.querySelector(".voyage_en_cours");
 function quandEpoqueChoisie(nomEpoque) {
   nomEpoqueActuelle = nomEpoque;
+  // console.log(nomEpoque);
+  loader.style.display = "block";
+  hideTime.textContent = "";
   // Utilisation de votre fonction voyagerTemps
+  voyagerTemps(nomEpoque, () => {
+    // console.log("Arrivé à ", nomEpoqueActuelle);
+    hideTime.textContent = nomEpoqueActuelle;
+    loader.style.display = "none";
+  });
 }
 
 // Fonction appelée plus haut quand le formulaire de recherche d'artefact est soumis
 function quandRechercheArtefact(artefact) {
   // Utilisation de votre fonction collecterArtefact
 }
+
+// Le téléporteur temporel
+function voyagerTemps(destination, voyageterminer) {
+  console.log("Voyage en cours vers ", destination);
+  setTimeout(() => {
+    voyageterminer(destination);
+  }, generationNombreAleatoireEntre(1000, 3000));
+}
+
+// voyagerTemps("destA", function () {
+//   console.log("tache A");
+// });
+
+// voyagerTemps("destB", function () {
+//   console.log("tache B");
+// });
