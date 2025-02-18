@@ -137,7 +137,7 @@ Nous ne ferons plus de manipulation de DOM à partir de cet exercice.
   - Tâche 1 : Voyager à l'époque médiévale
   - Tâche 2 : Collecter une épée de chevalier
   - Tâche 4 : Voyager à l'époque romaine
-  - Tâche 5 : Collecter un bouclier romain
+  - Tâche 5 : Collecter un bo uclier romain
   - Tâche 6 : Collecter une épée romaine
 - Utilise `console.log()` à toutes les étapes pour que tu puisses observer l'exécution séquentielle des tâches asynchrones.
 

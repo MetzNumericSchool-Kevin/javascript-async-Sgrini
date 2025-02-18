@@ -136,3 +136,29 @@ function quandRechercheArtefact(artefact) {
     loaderArtefact.style.display = "none";
   });
 }
+
+// La mission temporelle complexe
+
+function missionTemporelleComplexe() {
+  console.log("Mission complexe commence...");
+  voyagerTemps("medievale", () => {
+    console.log("Je suis à arrivé à l'époque médiévale.");
+    collecterArtefact("épée de chevalier", () => {
+      console.log("J'ai collecter l'épée de chevalier.");
+      voyagerTemps("romaine", () => {
+        console.log("Je suis à arrivé à l'époque romaine.");
+        collecterArtefact("bouclier romain", () => {
+          console.log("J'ai collecter un bouclier romain.");
+          collecterArtefact("épée romaine", () => {
+            console.log("J'ai collecter une épée romaine.");
+            console.log("Fin de la mission, retour à la caserne.");
+          });
+        });
+      });
+    });
+  });
+
+  console.log("fin execution synchrone de la fonction mission temporelle");
+}
+
+missionTemporelleComplexe();
