@@ -10,13 +10,7 @@ const formChoixEpoqueHtml = document.querySelector(".form__choix_epoque");
 const formRechercheArtefact = document.querySelector(
   ".form__recherche_artefact"
 );
-
-const epoques = {
-  romaine: "Romaine",
-  medievale: "Médievale",
-  jurassique: "Jurassique",
-};
-
+const loaderArtefact = document.querySelector(".recherche_en_cours");
 const creerLesChoixEpoque = (epoques) => {
   const selectHtml = formChoixEpoqueHtml.querySelector("select");
   Object.entries(epoques).forEach(([id_epoque, nom_epoque]) => {
@@ -31,10 +25,20 @@ function generationNombreAleatoireEntre(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+// Permet d'afficher l'époque de destination du voyage
 const afficherDestination = (nomEpoque) =>
   (localisationEpoqueHTML.textContent = nomEpoque);
 
+// Permet d'afficher un artefact trouvée, ou non, à une époque
+const afficherRechercheArtefact = ({ artefact, epoque, success = true }) => {
+  const li = document.createElement("li");
+  li.textContent = `${success ? "✅" : "❌"} ${artefact} (Epoque ${epoque})`;
+  listeArtefactHTML.appendChild(li);
+};
+
 // Execution
+
+// Gestion envoi formulaire choix époque
 formChoixEpoqueHtml.addEventListener("submit", (event) => {
   event.preventDefault();
   const epoque = new FormData(formChoixEpoqueHtml).get("epoque");
@@ -47,24 +51,30 @@ formChoixEpoqueHtml.addEventListener("submit", (event) => {
   quandEpoqueChoisie(epoque);
 });
 
+// Gestion envoi formulaire recherche artelefact
 formRechercheArtefact.addEventListener("submit", (event) => {
   event.preventDefault();
   const artefact = new FormData(formRechercheArtefact).get("artefact");
   quandRechercheArtefact(artefact);
 });
 
-const afficherRechercheArtefact = ({ artefact, epoque, success = true }) => {
-  const li = document.createElement("li");
-  li.textContent = `${success ? "✅" : "❌"} ${artefact} (Epoque ${epoque})`;
-  listeArtefactHTML.appendChild(li);
-};
-
 /**
  * Votre partie commence ici, la partie modifiable par vos soins
  */
-let nomEpoqueActuelle;
+function main() {
+  // Sera modifié par le dernier exercice
+  const epoques = {
+    romaine: "Romaine",
+    medievale: "Médievale",
+    jurassique: "Jurassique",
+  };
 
-creerLesChoixEpoque(epoques);
+  // Création dynamique des époques de destination de la machine temporelle
+  creerLesChoixEpoque(epoques);
+}
+
+main();
+let nomEpoqueActuelle;
 
 // Fonction appelée plus haut quand le formulaire de voyage temporel est soumis
 // et qu'une époque de destination du voyage temporel a été choisi
@@ -84,9 +94,6 @@ function quandEpoqueChoisie(nomEpoque) {
 }
 
 // Fonction appelée plus haut quand le formulaire de recherche d'artefact est soumis
-function quandRechercheArtefact(artefact) {
-  // Utilisation de votre fonction collecterArtefact
-}
 
 // Le téléporteur temporel
 function voyagerTemps(destination, voyageterminer) {
@@ -103,3 +110,29 @@ function voyagerTemps(destination, voyageterminer) {
 // voyagerTemps("destB", function () {
 //   console.log("tache B");
 // });
+
+// La collect d'artefact mystère
+
+function collecterArtefact(nomArtefact, callback) {
+  setTimeout(() => {
+    callback(nomArtefact);
+  }, generationNombreAleatoireEntre(1000, 3000));
+}
+function quandRechercheArtefact(artefact) {
+  loaderArtefact.style.display = "block";
+  collecterArtefact(artefact, (idartefact) => {
+    if (Math.random() * 100 >= 50) {
+      afficherRechercheArtefact({
+        artefact: idartefact,
+        epoque: nomEpoqueActuelle,
+      });
+    } else {
+      afficherRechercheArtefact({
+        artefact: idartefact,
+        epoque: nomEpoqueActuelle,
+        success: false,
+      });
+    }
+    loaderArtefact.style.display = "none";
+  });
+}
